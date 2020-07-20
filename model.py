@@ -44,19 +44,6 @@ class Planer:
         self.ocene_po_predmetih = {}
         self.predmeti_po_imenih = {}
         self.predavanja_po_predmetih = {}
-        
-    def __str__(self):
-        predmeti = self.predmeti
-        seznam = []
-        for predmet in predmeti:
-            seznam.append(predmet.ime)
-        return f'''predmeti : {seznam}, 
-        {self.predmeti_po_imenih}, 
-        {self.predavanja}, 
-        tu sooooo:{self.predavanja_po_predmetih}, 
-        ocena:{self.ocene, 
-        self.ocene_po_predmetih},
-        opravila: {self.opravila}'''
 
     def dodaj_predmet(self, ime):
         if ime in self.predmeti_po_imenih:
@@ -217,9 +204,6 @@ class Predavanje:
         self.predavatelj = predavatelj
         self.predmet = predmet
 
-    def __str__(self):
-        return f'{self.dan}, {self.ura}'
-
 class Ocenjevanje:    
     def __init__(self, ocena, tip, datum, opis, predmet):
         self.ocena = ocena
@@ -228,21 +212,10 @@ class Ocenjevanje:
         self.opis = opis
         self.predmet = predmet
 
-    def __str__(self):
-        return f'''{self.ocena},
-        {self.tip},
-        {self.datum},
-        {self.opis},
-        {self.predmet},'''
-
 class Predmet:
     def __init__(self, ime, planer):
         self.ime = ime
         self.planer = planer
-
-    def __str__(self):
-        predmet = self.ime
-        return f'predmet : {predmet}'
 
 class Opravilo:
     def __init__(self, naslov, rok, opis, planer):
@@ -251,9 +224,6 @@ class Opravilo:
         self.opis = opis
         self.status = False
         self.planer = planer
-
-    def __str__(self):
-        return f'To je opravilo:{self.naslov, self.rok, self.opis, self.status, self.planer}'
 
     def sprememba_statusa(self):
         self.status = not self.status
