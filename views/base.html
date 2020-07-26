@@ -1,3 +1,16 @@
+% zavihki = [
+%     'domov',
+%     'ocene',
+%     'urnik',
+%     'opravila'
+% ]
+% podatki = {
+%     'domov': ['Domov', 'fas fa-home'],
+%     'ocene': ['Ocene', 'fas fa-calculator'],
+%     'urnik': ['Urnik', 'far fa-calendar-alt'],
+%     'opravila': ['Opravila', 'fas fa-clipboard-list']
+% }
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,11 +25,54 @@
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <div class="navbar-item">
-            <img src="/static/logo.png"  width="200" alt="Logo">
+            <img src="/static/logo.png" width="200" alt="Logo">
           </div>
         </div>
 
-        
+      % if trenutna_stran != 'prijava':
+
+        <div class="navbar-start">
+          <div class="tabs is-centered">
+            <ul style="border: 0ch;">
+              % for zavihek in zavihki:
+              %   if zavihek == trenutna_stran:
+                <li class="is-active">
+              %   else: 
+                <li>
+              %   end
+              % if zavihek == 'ocene':
+                <a href="/{{zavihek}}/dodaj-oceno/">
+              % else:
+                <a href="/{{zavihek}}/">
+              % end
+                  <span class="icon is-small"><i class="{{podatki[zavihek][1]}}" aria-hidden="true"></i></span>
+                  <span>{{podatki[zavihek][0]}}</span>
+                </a>
+              </li>
+              % end
+            </ul>
+          </div>
+          
+        </div>
+    
+        <div class="navbar-end">
+          <div class="navbar-item">
+            {{ime}}
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <form method="POST" action="/odjava/">
+                <button class="button is-link is-outlined is-small">
+                  <span class="icon has-text-dark is-small">
+                    <i class="fas fa-sign-out-alt" ></i>
+                  </span>
+                  <span><input style="border: 0ch; background-color: inherit;" type="submit" value="Odjava"></span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      % end    
     
     </nav>
 

@@ -1,0 +1,72 @@
+<div class="columns">
+  <div class="column"> 
+    <form action="/dodaj-oceno/" method="POST">
+    
+      <div class="field">
+        <label class="label">Predmet</label>
+        <div class="control">
+          <div class="select">
+            <select name="predmet">
+                <option disabled selected>izberi</option>
+            % for predmet in planer.predmeti: 
+                <option>{{predmet.ime}}</option>
+            % end
+            </select>
+          </div>
+        </div>
+      </div>
+    
+        <div class="field">
+            <label class="label">Ocena</label>
+            <div class="control" style="width: 125px;">
+              <input class="input" type="number" name="ocena" min="1">
+            </div>
+          </div>
+          
+          <div class="field">
+            <label class="label">Tip</label>
+            <div class="control">
+              <div class="select">
+                <select name="tip" >
+                  <option disabled selected>izberi</option>
+                  <option>teorija</option>
+                  <option>vaje</option>
+                  <option>projekt</option>
+                  <option>predstavitev</option>
+                  <option>drugo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label class="label">Opis</label>
+            <div class="control">
+              <textarea class="textarea" name="opis" placeholder="Vpiši podrobnosti, opombe..."></textarea>
+            </div>
+          </div>
+          
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link" type="submit">Dodaj</button>
+            </div>
+          </div>
+    </form>
+  </div>
+  <div class="column is-4">
+    <nav class="level" style="display: block;">
+      <div class="level-item has-text-centered" style="padding-bottom: 15%;">
+        <div>
+          <p class="heading">Skupno povprečje</p>
+          <p class="title">{{povprecje[0]}}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">število dodanih ocen</p>
+          <p class="title">{{povprecje[1]}}</p>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

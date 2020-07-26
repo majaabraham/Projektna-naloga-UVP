@@ -1,0 +1,44 @@
+% rebase('base.html', trenutna_stran='domov', ime = ime)
+
+<div class="tile is-ancestor">
+  <div class="tile is-parent">
+    <div class="tile is-child box">
+       Dobrodošli!
+    </div>
+  </div>
+  <div class="tile is-3 is-parent">
+      <nav class="panel is-link">
+        <p class="panel-heading">
+          Predmeti
+        </p>
+        <div class="panel-block">
+          <form action="/dodaj-predmet/" method="POST">
+            <p class="control">
+              <input class="input" type="text" placeholder="ime predmeta" name="ime" maxlength="25">
+              <button class="button is-outlined is-small" style="margin-top: 3px;">
+                <span class="icon has-text-dark is-small">
+                  <i class="fas fa-plus" ></i>
+                </span>
+                <span><input style="border: 0ch; background-color: inherit;" type="submit" value="Dodaj"></span>
+              </button>
+            </p>
+          </form>
+        </div>
+        
+        % for predmet in sorted(planer.predmeti):
+        <div class="panel-block is-active" >
+          <div class="control">
+           <li>{{predmet.ime}}</li>
+          </div>
+          <form action="/odstrani-predmet/" method="POST">
+            <div class="control">
+              <input type="hidden" name="ime" value="{{predmet.ime}}">
+              <button type="submit" class="delete"></button>
+            </div>
+          </form>
+        </div>
+        % end    
+      </nav>
+  </div>
+</div>
+

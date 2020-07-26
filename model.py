@@ -10,6 +10,10 @@ class Uporabnik:
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
             raise ValueError('Napačno geslo!')
+    @staticmethod
+    def preveri_enakost_gesel(geslo1, geslo2):
+        if geslo1 != geslo2:
+            raise ValueError('Gesli se ne ujemata!')
 
     def shrani_planer(self, ime_datoteke):
         slovar_podatkov = {
@@ -33,6 +37,8 @@ class Uporabnik:
 
 
 def povprecje(seznam):
+    if len(seznam) == 0:
+        return 0
     return sum(seznam)/len(seznam)
 
 class Planer:
@@ -54,12 +60,14 @@ class Planer:
         return predmet
 
     def odstrani_predmet(self, predmet):
-        for predavanje in self.predavanja_po_predmetih[predmet]:
-            self.predavanja.remove(predavanje)
-        del self.predavanja_po_predmetih[predmet]
-        for ocena in self.ocene_po_predmetih[predmet]:
-            self.ocene.remove(ocena)
-        del self.ocene_po_predmetih[predmet]
+        if predmet in self.predavanja_po_predmetih:
+            for predavanje in self.predavanja_po_predmetih[predmet]:
+                self.predavanja.remove(predavanje)
+            del self.predavanja_po_predmetih[predmet]
+        if predmet in self.ocene_po_predmetih:
+            for ocena in self.ocene_po_predmetih[predmet]:
+                self.ocene.remove(ocena)
+            del self.ocene_po_predmetih[predmet]
         self.predmeti.remove(predmet)
         del self.predmeti_po_imenih[predmet.ime]
 
@@ -71,9 +79,15 @@ class Planer:
         return predavanje
 
     def odstrani_predavanje(self, predavanje):
-        self._obstoj_predavanja(predavanje)
         self.predavanja.remove(predavanje)
         self.predavanja_po_predmetih[predavanje.predmet].remove(predavanje)
+
+    def predavanja_po_dnevu(self, dan):
+        seznam = []
+        for predavanje in self.predavanja:
+            if predavanje.dan == dan:
+                seznam.append(predavanje)
+        return seznam
 
     def dodaj_oceno(self, ocena, tip, datum, opis, predmet):
         self._obstoj_predmeta(predmet, 'oceno')
@@ -83,49 +97,55 @@ class Planer:
         return ocena
 
     def odstrani_oceno(self, ocena):
-        self._obstoj_ocene(ocena)
         self.ocene.remove(ocena)
         self.ocene_po_predmetih[ocena.predmet].remove(ocena)
 
-    def _obstoj_ocene(self, ocena):
-        if ocena not in self.ocene:
-            raise ValueError(f'Ocena ne obstaja!')
+    def poisci_oceno(self, ocena):
+        for element in self.ocene:
+            if str(element) == ocena:
+                return element
+        raise ValueError(f'Ocena ne obstaja!')
 
-    def _obstoj_predavanja(self, predavanje):
-        if predavanje not in self.predavanja:
-            raise ValueError(f'Predavanje ne obstaja!')
+    def poisci_predavanje(self, predavanje):
+        for element in self.predavanja:
+            if str(element) == predavanje:
+                return element
+        raise ValueError(f'Predavanje ne obstaja!')
 
     def _obstoj_predmeta(self, predmet, uporaba):
         if predmet not in self.predmeti:
             raise ValueError(f'Predmet pri katerem želite dodati {uporaba} ne obstaja!')
 
-    def _obstoj_opravila(self, opravilo):
-        if opravilo not in self.opravila:
-            raise ValueError(f'Opravilo ne obstaja')
+    def poisci_opravilo(self, opravilo):
+        for element in self.opravila:
+            if str(element) == opravilo:
+                return element
+        raise ValueError(f'Opravilo ne obstaja')
 
     def slovar_povprecij(self):
         slovar = {}
         for predmet in self.ocene_po_predmetih:
             seznam = []
             for ocena in self.ocene_po_predmetih[predmet]:
-                seznam.append(ocena.ocena)
+                seznam.append(int(ocena.ocena))
             slovar[predmet] = povprecje(seznam)
         return slovar
 
     def skupno_povprecje(self):
         seznam = []
-        povprecja = self.slovar_povprecij()
-        for povp in povprecja:
-            seznam.append(povprecja[povp])
-        return povprecje(seznam)
+        for ocena in self.ocene:
+            seznam.append(int(ocena.ocena))
+        return round(povprecje(seznam),1)
 
-    def dodaj_opravilo(self, naslov, rok, opis):
-        opravilo = Opravilo(naslov,rok, opis, self)
+    def stevilo_ocen(self):
+        return len(self.ocene) 
+
+    def dodaj_opravilo(self, naslov, rok, opis, status):
+        opravilo = Opravilo(naslov, rok, opis, self, status)
         self.opravila.append(opravilo)
         return opravilo
 
-    def odstrani_opravilo(self,opravilo):
-        self._obstoj_opravila(opravilo)
+    def odstrani_opravilo(self, opravilo):
         self.opravila.remove(opravilo)
     
     def opravila_po_statusih(self, status):
@@ -150,7 +170,7 @@ class Planer:
                 'predmet': predavanje.predmet.ime,
             } for predavanje in self.predavanja],
             'ocene': [{
-                'ocena': ocenjevanje.ocena,
+                'ocena': int(ocenjevanje.ocena),
                 'tip': ocenjevanje.tip,
                 'datum': str(ocenjevanje.datum),
                 'opis': ocenjevanje.opis,
@@ -160,6 +180,7 @@ class Planer:
                 'naslov': opravilo.naslov,
                 'rok': str(opravilo.rok),
                 'opis': opravilo.opis,
+                'status': opravilo.status,
             } for opravilo in self.opravila],
         }
 
@@ -176,7 +197,7 @@ class Planer:
                 predavanje['prostor'], 
                 predavanje['vrsta'], 
                 predavanje['predavatelj'], 
-                planer.predmeti_po_imenih[predavanje['predmet']],
+                planer.predmeti_po_imenih[predavanje['predmet']]
             )
         for ocenjevanje in slovar_podatkov['ocene']:
             planer.dodaj_oceno(
@@ -184,13 +205,14 @@ class Planer:
                 ocenjevanje['tip'],
                 ocenjevanje['datum'],
                 ocenjevanje['opis'],
-                planer.predmeti_po_imenih[ocenjevanje['predmet']],
+                planer.predmeti_po_imenih[ocenjevanje['predmet']]
             )
         for opravilo in slovar_podatkov['opravila']:
             planer.dodaj_opravilo(
                 opravilo['naslov'],
                 opravilo['rok'],
                 opravilo['opis'],
+                opravilo['status']
             )
         return planer
 
@@ -203,6 +225,13 @@ class Predavanje:
         self.vrsta = vrsta
         self.predavatelj = predavatelj
         self.predmet = predmet
+        self.prikaz = False
+
+    def __lt__(self, other):
+        return self.ura < other.ura
+
+    def spremeni_prikaz(self):
+        self.prikaz = not self.prikaz
 
 class Ocenjevanje:    
     def __init__(self, ocena, tip, datum, opis, predmet):
@@ -212,18 +241,27 @@ class Ocenjevanje:
         self.opis = opis
         self.predmet = predmet
 
+    def __lt__(self, other):
+        return self.datum < other.datum    
+
 class Predmet:
     def __init__(self, ime, planer):
         self.ime = ime
         self.planer = planer
 
+    def __lt__(self, other):
+        return self.ime < other.ime
+
 class Opravilo:
-    def __init__(self, naslov, rok, opis, planer):
+    def __init__(self, naslov, rok, opis, planer, status):
         self.naslov = naslov
         self.rok = rok
         self.opis = opis
-        self.status = False
+        self.status = status
         self.planer = planer
+
+    def __lt__(self, other):
+        return self.rok < other.rok
 
     def sprememba_statusa(self):
         self.status = not self.status

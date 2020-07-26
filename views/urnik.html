@@ -1,0 +1,84 @@
+% rebase('base.html', trenutna_stran='urnik', ime = ime)
+
+% dnevi = [
+%     'ponedeljek',
+%     'torek',
+%     'sreda',
+%     'četrtek',
+%     'petek'
+% ]
+% barve = {
+%     'ponedeljek': ' is-link is-light',
+%     'torek': '',
+%     'sreda': ' is-link is-light',
+%     'četrtek': '',
+%     'petek': ' is-link is-light'
+% }
+
+<div class="tile is-ancestor">
+    <form action="/dodaj-predavanje/" method="POST">
+        <div class="field has-addons">
+          <div class="control">
+            <div class="select">
+              <select name="predmet">
+                  <option disabled selected>izberi predmet</option>
+              % for predmet in planer.predmeti: 
+                  <option>{{predmet.ime}}</option>
+              % end
+              </select>
+            </div>
+          </div>
+
+          <div class="control">
+            <div class="select">
+              <select name="vrsta">
+                  <option disabled selected>izberi vrsto</option>
+                  <option>predavanje</option>
+                  <option>vaje</option>
+                  <option>drugo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control">
+            <div class="select">
+              <select name="dan">
+                  <option disabled selected>izberi dan</option>
+              % for dan in dnevi: 
+                  <option>{{dan}}</option>
+              % end
+              </select>
+            </div>
+          </div>
+
+        <div class="control">
+            <input class="input" type="time" name="ura">
+        </div>
+
+        <div class="control" style="width: 13%;">
+          <input class="input" type="number" name="trajanje" placeholder="trajanje v min" min="0">
+        </div>
+
+        <div class="control" style="width: 10%;">
+            <input class="input" type="text" placeholder="prostor" name="prostor">
+        </div>
+
+        <div class="control">
+            <input class="input" type="text" name="predavatelj" placeholder="predavatelj/izvajalec">
+        </div>
+
+        <div class="control">
+            <button class="button is-link" type="submit">Dodaj</button>
+        </div>
+
+      </div>
+    </form>
+</div>
+
+<div class="tile is-parent">
+    % for dan in dnevi:
+      <article class="tile is-child has-text-centered" style="padding-left: 0.5%; padding-right: 0.5%;">
+       % include('_izpis_predavanj.html', dan = dan) 
+      </article>
+    % end      
+  </div>

@@ -1,0 +1,45 @@
+<h3 class="title is-3">{{podzavihek}}</h3>
+<table class="table" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>DATUM</th>
+        <th>OCENA</th>
+        <th>TIP</th>
+        <th>OPIS</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    % predmet = planer.predmeti_po_imenih[podzavihek]
+    % for ocena in sorted(planer.ocene_po_predmetih.get(predmet,[]), reverse=True):
+        <tr>
+          <td>{{ocena.datum}}</td>
+          <td>{{ocena.ocena}}</td>
+          <td>{{ocena.tip}}</td>
+          <td>{{ocena.opis}}</td>
+          <td>
+              <form action="/odstrani-oceno/" method="POST">
+            <div class="control">
+              <input type="hidden" name="ocena" value="{{ocena}}">
+              <button type="submit" class="delete"></button>
+            </div>
+          </form>
+        </td>
+        </tr>
+    % end
+    </tbody>
+</table>
+<nav class="level is-mobile" style="position: fixed; bottom: 3%; width: 70%;">
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Povprečje predmeta</p>
+      <p class="title">{{povprecje[0]}}</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Skupno povprečje</p>
+      <p class="title">{{povprecje[1]}}</p>
+    </div>
+  </div>
+</nav>
