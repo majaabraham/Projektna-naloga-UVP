@@ -1,0 +1,29 @@
+% prikaz = {
+    %  False: '',
+    %  True: ' is-active'
+    % }
+  
+     <p class="title is-5" style="margin-bottom: 1%;">Danes - {{dan}}</p>
+     <p style="margin: 0%;">{{datum}}</p>
+  <hr style="margin-bottom: 3%; margin-top: 3%;">
+  % for predavanje in sorted(planer.predavanja_po_dnevu(dan)):
+      <div class="notification is-link is-light" style="margin-bottom: 4%; padding: 3%;">
+          <p style="padding: 0%; color:black;">{{predavanje.ura}}</p>
+          <p class="title is-6" style="padding: 0%; color: black; margin: 2%;"> {{predavanje.predmet.ime}} </p>
+          <nav class="level is-mobile">
+              <div class="level-left">
+                  <div class="level-item has-text-dark">
+                    {{predavanje.trajanje}} min
+                  </div>
+              </div>
+              <div class="level-right">
+                  <div class="level-item has-text-dark">
+                    Prostor: {{predavanje.prostor}}
+                  </div>
+              </div>
+            </nav>
+      </div>
+  
+      
+  % end
+  

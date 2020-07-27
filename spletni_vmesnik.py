@@ -6,6 +6,21 @@ import hashlib
 
 SKRIVNOST_ZA_PISKOTKE = 'STROGO ZAUPNA SKRIVNOST'
 uporabniki ={}
+NABOR_FORMATOV = (
+'.zip',
+'.jpg',
+'.jpeg',
+'.gif',
+'.png',
+'.htm',
+'.pptx',
+'.ppt',
+'.xlsx',
+'.xls',
+'.doc',
+'.docx',
+'.pdf',
+'.txt')
 
 for ime_datoteke in os.listdir('uporabniki'):
     uporabnik = Uporabnik.nalozi_planer(os.path.join('uporabniki', ime_datoteke))
@@ -27,10 +42,22 @@ def zasifriraj_geslo(geslo):
     zasifrirano_geslo = h.hexdigest()
     return zasifrirano_geslo
 
+def ustvari_mapo_uporabnika(uporabnisko_ime):
+    pot = f'datoteke_uporabnikov/{uporabnisko_ime}' 
+    if not os.path.exists(pot):
+        os.makedirs(pot)
+
 def odpri_stran(stran, podzavihek='', povprecje=''):
     ime = trenutni_uporabnik().ime_in_priimek
     planer = trenutni_uporabnik().planer
-    return bottle.template(stran, planer=planer, ime = ime, podzavihek = podzavihek, povprecje = povprecje)
+    datum = dan_v_tednu()
+    return bottle.template(
+        stran, 
+        planer=planer, 
+        ime = ime, 
+        podzavihek = podzavihek, 
+        povprecje = povprecje,
+        datum = datum)
     
 def prikazi_povprecje(podzavihek):
     planer = trenutni_uporabnik().planer
@@ -44,7 +71,13 @@ def skupno_povprecje():
     povprecje = planer.skupno_povprecje()
     st_ocen = planer.stevilo_ocen()
     return povprecje, st_ocen
-    
+
+def dan_v_tednu():
+    dnevi = ('ponedeljek', 'torek', 'sreda', 'četrtek', 'petek', 'sobota', 'nedelja')
+    dan = date.today().weekday()
+    datum = date.today()
+    return dnevi[dan], datum
+
 @bottle.get('/')
 def zacetna_stran(): 
     bottle.redirect('/domov/')
@@ -94,6 +127,7 @@ def registracija():
         uporabniki[uporabnisko_ime] = uporabnik
     bottle.response.set_cookie('uporabnisko_ime', uporabnik.uporabnisko_ime, path='/', secret=SKRIVNOST_ZA_PISKOTKE)
     uporabnik.shrani_planer(os.path.join('uporabniki', f'{uporabnik.uporabnisko_ime}.json'))
+    ustvari_mapo_uporabnika(uporabnisko_ime)
     bottle.redirect('/')
 
 @bottle.post('/prijava/')
@@ -116,8 +150,15 @@ def odjava():
 
 @bottle.get('/static/<ime_dat:path>')
 def server_static(ime_dat):
-  pot = './slike'
-  return bottle.static_file(ime_dat, root=pot)
+    pot = './slike'
+    return bottle.static_file(ime_dat, root=pot)
+
+@bottle.get('/static_uporabnik/<ime_dat:path>')
+def static(ime_dat):
+    up_ime = trenutni_uporabnik().uporabnisko_ime
+    pot = f'./datoteke_uporabnikov/{up_ime}'
+    return bottle.static_file(ime_dat, root=pot)
+
 
 @bottle.post('/dodaj-predmet/')
 def dodaj_predmet():
@@ -216,5 +257,32 @@ def spremeni():
     predavanje = planer.poisci_predavanje(str_predavanje)
     predavanje.spremeni_prikaz()
     bottle.redirect('/urnik/')
+
+@bottle.post('/dodaj-datoteko/')
+def dodaj_datoteko():
+    uporabnik = trenutni_uporabnik().uporabnisko_ime
+    planer = trenutni_uporabnik().planer
+    datoteka = bottle.request.files.get('datoteka') 
+    ime, koncnica = os.path.splitext(datoteka.filename)
+    if koncnica not in NABOR_FORMATOV:
+        return ValueError('Izberite drug format datoteke.')
+    planer.dodaj_datoteko(ime, koncnica)
+    pot = f'datoteke_uporabnikov/{uporabnik}'
+    datoteka.save(f'{pot}/{datoteka.filename}')
+    shrani_trenutnega_uporabnika()
+    bottle.redirect('/')
+
+@bottle.post('/odstrani-datoteko/')
+def odstrani_datoteko():
+    up_ime = trenutni_uporabnik().uporabnisko_ime
+    planer = trenutni_uporabnik().planer
+    src_datoteka = bottle.request.forms.get('datoteka')
+    datoteka = planer.poisci_datoteko(src_datoteka)
+    planer.odstrani_datoteko(datoteka)
+    os.remove(f'datoteke_uporabnikov/{up_ime}/{datoteka.ime + datoteka.koncnica}')
+    shrani_trenutnega_uporabnika()
+    bottle.redirect('/')
+
+
 
 bottle.run(debug=True, reloader=True)

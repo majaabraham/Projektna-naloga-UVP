@@ -47,6 +47,7 @@ class Planer:
         self. predmeti = []
         self.ocene = []
         self.opravila = []
+        self.datoteke = []
         self.ocene_po_predmetih = {}
         self.predmeti_po_imenih = {}
         self.predavanja_po_predmetih = {}
@@ -116,6 +117,12 @@ class Planer:
         if predmet not in self.predmeti:
             raise ValueError(f'Predmet pri katerem želite dodati {uporaba} ne obstaja!')
 
+    def poisci_datoteko(self, datoteka):
+        for element in self.datoteke:
+            if str(element) == datoteka:
+                return element
+        raise ValueError(f'Opravilo ne obstaja')
+
     def poisci_opravilo(self, opravilo):
         for element in self.opravila:
             if str(element) == opravilo:
@@ -155,6 +162,14 @@ class Planer:
                 seznam.append(opravilo)
         return seznam
 
+    def dodaj_datoteko(self, ime, koncnica):
+        datoteka = Datoteka(ime, koncnica)
+        self.datoteke.append(datoteka)
+        return datoteka
+
+    def odstrani_datoteko(self, datoteka):
+        self.datoteke.remove(datoteka)
+
     def slovar_za_shranjevanje(self):
         return {
             'predmeti': [{
@@ -182,6 +197,10 @@ class Planer:
                 'opis': opravilo.opis,
                 'status': opravilo.status,
             } for opravilo in self.opravila],
+            'datoteke': [{
+                'ime': datoteka.ime,
+                'koncnica': datoteka.koncnica,
+            } for datoteka in self.datoteke],
         }
 
     @classmethod
@@ -213,6 +232,11 @@ class Planer:
                 opravilo['rok'],
                 opravilo['opis'],
                 opravilo['status']
+            )
+        for datoteka in slovar_podatkov['datoteke']:
+            planer.dodaj_datoteko(
+                datoteka['ime'],
+                datoteka['koncnica']
             )
         return planer
 
@@ -265,3 +289,8 @@ class Opravilo:
 
     def sprememba_statusa(self):
         self.status = not self.status
+
+class Datoteka:
+    def __init__(self, ime, koncnica):
+        self.ime = ime
+        self.koncnica = koncnica
