@@ -18,13 +18,13 @@
           <td>{{ocena.tip}}</td>
           <td>{{ocena.opis}}</td>
           <td>
-              <form action="/odstrani-oceno/" method="POST">
-            <div class="control">
-              <input type="hidden" name="ocena" value="{{ocena}}">
-              <button type="submit" class="delete"></button>
-            </div>
-          </form>
-        </td>
+            <form action="/odstrani-oceno/" method="POST">
+              <div class="control">
+                <input type="hidden" name="ocena" value="{{ocena}}">
+                <button type="submit" class="delete"></button>
+              </div>
+            </form>
+          </td>
         </tr>
     % end
     </tbody>

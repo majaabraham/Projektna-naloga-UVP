@@ -17,8 +17,6 @@
 %  '.txt': 'fas fa-file-alt'
 % }
   
-
-
 <div class="tile is-ancestor">
   <div class="tile is-parent ">
     <div class="tile is-child is-5 has-text-centered" style="padding-right: 5%; padding-left: 2%;">
@@ -31,70 +29,69 @@
           Datoteke, zapiski,...
         </p>
         <div class="panel-block">
-        <form enctype = "multipart/form-data" action = "/dodaj-datoteko/" method = "post">
-          <div class="field has-addons"> 
-          <div class="control">
-            <input type = "file" name = "datoteka" class="input"/>
-          </div> 
-          <div class="control">
-            <input class="button" type = "submit" value = "Dodaj" />
-          </div> 
+          <form enctype = "multipart/form-data" action = "/dodaj-datoteko/" method = "post">
+            <div class="field has-addons"> 
+              <div class="control">
+                <input type = "file" name = "datoteka" class="input"/>
+              </div> 
+              <div class="control">
+                <input class="button" type = "submit" value = "Dodaj" />
+              </div> 
+            </div>
+          </form> 
         </div>
-       </form> 
-      </div>
-    % for datoteka in planer.datoteke:
-      <a class="panel-block" href="/static_uporabnik/{{datoteka.ime + datoteka.koncnica}}">
-        <div class="control">
-        <span class="panel-icon">
-          <i class="{{formati[datoteka.koncnica]}}" aria-hidden="true"></i>
-        </span>
-        {{datoteka.ime + datoteka.koncnica}}
-      </div>
-        <form action="/odstrani-datoteko/" method="POST">
+      % for datoteka in planer.datoteke:
+        <a class="panel-block" href="/static_uporabnik/{{datoteka.ime + datoteka.koncnica}}">
           <div class="control">
-            <input type="hidden" name="datoteka" value="{{datoteka}}">
-            <button type="submit" class="delete"></button>
+            <span class="panel-icon">
+              <i class="{{formati[datoteka.koncnica]}}" aria-hidden="true"></i>
+            </span>
+            {{datoteka.ime + datoteka.koncnica}}
           </div>
-        </form>
-      </a>
-    % end
-    </article>
-  </div>
-</div>
-  
-  <div class="tile is-3 is-parent">
-      <nav class="panel is-link">
-        <p class="panel-heading">
-          Predmeti
-        </p>
-        <div class="panel-block">
-          <form action="/dodaj-predmet/" method="POST">
-            <p class="control">
-              <input class="input" type="text" placeholder="ime predmeta" name="ime" maxlength="25">
-              <button class="button is-outlined is-small" style="margin-top: 3px;">
-                <span class="icon has-text-dark is-small">
-                  <i class="fas fa-plus" ></i>
-                </span>
-                <span><input style="border: 0ch; background-color: inherit;" type="submit" value="Dodaj"></span>
-              </button>
-            </p>
-          </form>
-        </div>
-        
-        % for predmet in sorted(planer.predmeti):
-        <div class="panel-block is-active" >
-          <div class="control">
-           <li>{{predmet.ime}}</li>
-          </div>
-          <form action="/odstrani-predmet/" method="POST">
+          <form action="/odstrani-datoteko/" method="POST">
             <div class="control">
-              <input type="hidden" name="ime" value="{{predmet.ime}}">
+              <input type="hidden" name="datoteka" value="{{datoteka}}">
               <button type="submit" class="delete"></button>
             </div>
           </form>
+        </a>
+      % end
+      </article>
+    </div>
+  </div>
+  <div class="tile is-3 is-parent">
+    <nav class="panel is-link">
+      <p class="panel-heading">
+        Predmeti
+      </p>
+      <div class="panel-block">
+        <form action="/dodaj-predmet/" method="POST">
+          <p class="control">
+            <input class="input" type="text" placeholder="ime predmeta" name="ime" maxlength="25">
+            <button class="button is-outlined is-small" style="margin-top: 3px;">
+              <span class="icon has-text-dark is-small">
+                <i class="fas fa-plus" ></i>
+              </span>
+              <span><input style="border: 0ch; background-color: inherit;" type="submit" value="Dodaj"></span>
+            </button>
+          </p>
+        </form>
+      </div>
+      
+      % for predmet in sorted(planer.predmeti):
+      <div class="panel-block is-active" >
+        <div class="control">
+         <li>{{predmet.ime}}</li>
         </div>
-        % end    
-      </nav>
+        <form action="/odstrani-predmet/" method="POST">
+          <div class="control">
+            <input type="hidden" name="ime" value="{{predmet.ime}}">
+            <button type="submit" class="delete"></button>
+          </div>
+        </form>
+      </div>
+      % end    
+    </nav>
   </div>
 </div>
 

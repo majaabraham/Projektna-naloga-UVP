@@ -6,21 +6,22 @@ import hashlib
 
 SKRIVNOST_ZA_PISKOTKE = 'STROGO ZAUPNA SKRIVNOST'
 uporabniki ={}
-NABOR_FORMATOV = (
-'.zip',
-'.jpg',
-'.jpeg',
-'.gif',
-'.png',
-'.htm',
-'.pptx',
-'.ppt',
-'.xlsx',
-'.xls',
-'.doc',
-'.docx',
-'.pdf',
-'.txt')
+NABOR_FORMATOV = (        
+    '.zip',
+    '.jpg',
+    '.jpeg',
+    '.gif',
+    '.png',
+    '.htm',
+    '.pptx',
+    '.ppt',
+    '.xlsx',
+    '.xls',
+    '.doc',
+    '.docx',
+    '.pdf',
+    '.txt',
+)
 
 for ime_datoteke in os.listdir('uporabniki'):
     uporabnik = Uporabnik.nalozi_planer(os.path.join('uporabniki', ime_datoteke))
@@ -36,6 +37,9 @@ def shrani_trenutnega_uporabnika():
     uporabnik = trenutni_uporabnik()
     uporabnik.shrani_planer(os.path.join('uporabniki', f'{uporabnik.uporabnisko_ime}.json'))
 
+def trenutni_planer():
+    return trenutni_uporabnik().planer
+
 def zasifriraj_geslo(geslo):
     h = hashlib.blake2b()
     h.update(geslo.encode(encoding='utf-8'))
@@ -49,7 +53,7 @@ def ustvari_mapo_uporabnika(uporabnisko_ime):
 
 def odpri_stran(stran, podzavihek='', povprecje=''):
     ime = trenutni_uporabnik().ime_in_priimek
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     datum = dan_v_tednu()
     return bottle.template(
         stran, 
@@ -60,14 +64,14 @@ def odpri_stran(stran, podzavihek='', povprecje=''):
         datum = datum)
     
 def prikazi_povprecje(podzavihek):
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     predmet = planer.predmeti_po_imenih[podzavihek]
     povprecja = planer.slovar_povprecij()
     skupno_povprecje = planer.skupno_povprecje()
-    return [povprecja.get(predmet,0), skupno_povprecje]
+    return povprecja.get(predmet,0), skupno_povprecje
 
 def skupno_povprecje():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     povprecje = planer.skupno_povprecje()
     st_ocen = planer.stevilo_ocen()
     return povprecje, st_ocen
@@ -93,7 +97,6 @@ def ocene(podzavihek):
     else:
         povprecje = prikazi_povprecje(podzavihek)
     return odpri_stran('ocene.html', podzavihek, povprecje)
-    
 
 @bottle.get('/urnik/')
 def urnik():
@@ -136,7 +139,8 @@ def prijava_post():
     geslo = bottle.request.forms.getunicode('geslo')
     zasifrirano_geslo = zasifriraj_geslo(geslo)
     if uporabnisko_ime not in uporabniki:
-        raise ValueError('Uporabniško ime ne obstaja! Vpišite veljavno uporabniško ime ali se registrirajte.')
+        raise ValueError('''Uporabniško ime ne obstaja! 
+    Vpišite veljavno uporabniško ime ali se registrirajte.''')
     else:
         uporabnik = uporabniki[uporabnisko_ime] 
         uporabnik.preveri_geslo(zasifrirano_geslo)
@@ -159,10 +163,9 @@ def static(ime_dat):
     pot = f'./datoteke_uporabnikov/{up_ime}'
     return bottle.static_file(ime_dat, root=pot)
 
-
 @bottle.post('/dodaj-predmet/')
 def dodaj_predmet():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     ime = bottle.request.forms.getunicode('ime')
     if ime == '':
         bottle.redirect('/')
@@ -172,7 +175,7 @@ def dodaj_predmet():
 
 @bottle.post('/odstrani-predmet/')
 def odstrani_predmet():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     ime = bottle.request.forms.getunicode('ime')
     predmet = planer.predmeti_po_imenih[ime]
     planer.odstrani_predmet(predmet)
@@ -181,7 +184,7 @@ def odstrani_predmet():
 
 @bottle.post('/dodaj-oceno/')
 def dodaj_oceno():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     ocena = bottle.request.forms.getunicode('ocena')
     tip = bottle.request.forms.getunicode('tip')
     opis = bottle.request.forms.getunicode('opis')
@@ -192,7 +195,7 @@ def dodaj_oceno():
 
 @bottle.post('/odstrani-oceno/')
 def odstrani_oceno():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     str_ocena = bottle.request.forms.getunicode('ocena')
     ocena = planer.poisci_oceno(str_ocena)
     planer.odstrani_oceno(ocena)
@@ -201,7 +204,7 @@ def odstrani_oceno():
 
 @bottle.post('/dodaj-opravilo/')
 def dodaj_opravilo():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     naslov = bottle.request.forms.getunicode('naslov')
     rok = str(bottle.request.forms.getunicode('rok'))
     opis = bottle.request.forms.getunicode('opis')
@@ -211,7 +214,7 @@ def dodaj_opravilo():
 
 @bottle.post('/odstrani-opravilo/')
 def odstrani_opravilo():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     str_opravilo = bottle.request.forms.getunicode('opravilo')
     opravilo = planer.poisci_opravilo(str_opravilo)
     planer.odstrani_opravilo(opravilo)
@@ -220,7 +223,7 @@ def odstrani_opravilo():
 
 @bottle.post('/spremeni-status/')
 def spremeni_status():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     str_opravilo = bottle.request.forms.getunicode('opravilo')
     opravilo = planer.poisci_opravilo(str_opravilo)
     opravilo.sprememba_statusa()
@@ -233,8 +236,8 @@ def dodaj_predavanje():
     predmet = planer.predmeti_po_imenih[bottle.request.forms.getunicode('predmet')]
     vrsta = bottle.request.forms.getunicode('vrsta')
     dan = bottle.request.forms.getunicode('dan')
-    ura = bottle.request.forms.getunicode('ura')
-    trajanje = bottle.request.forms.getunicode('trajanje')
+    ura = bottle.request.forms.get('ura')
+    trajanje = bottle.request.forms.get('trajanje')
     prostor = bottle.request.forms.getunicode('prostor')
     predavatelj = bottle.request.forms.getunicode('predavatelj')
     planer.dodaj_predavanje(dan, ura, trajanje, prostor, vrsta, predavatelj, predmet)
@@ -243,7 +246,7 @@ def dodaj_predavanje():
 
 @bottle.post('/odstrani-predavanje/')
 def odstrani_predavanje():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     str_predavanje = bottle.request.forms.getunicode('predavanje')
     predavanje = planer.poisci_predavanje(str_predavanje)
     planer.odstrani_predavanje(predavanje)
@@ -252,7 +255,7 @@ def odstrani_predavanje():
 
 @bottle.post('/spremeni-prikaz/')
 def spremeni():
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     str_predavanje = bottle.request.forms.getunicode('predavanje')
     predavanje = planer.poisci_predavanje(str_predavanje)
     predavanje.spremeni_prikaz()
@@ -260,14 +263,14 @@ def spremeni():
 
 @bottle.post('/dodaj-datoteko/')
 def dodaj_datoteko():
-    uporabnik = trenutni_uporabnik().uporabnisko_ime
-    planer = trenutni_uporabnik().planer
+    up_ime = trenutni_uporabnik().uporabnisko_ime
+    planer = trenutni_planer()
     datoteka = bottle.request.files.get('datoteka') 
     ime, koncnica = os.path.splitext(datoteka.filename)
     if koncnica not in NABOR_FORMATOV:
         return ValueError('Izberite drug format datoteke.')
     planer.dodaj_datoteko(ime, koncnica)
-    pot = f'datoteke_uporabnikov/{uporabnik}'
+    pot = f'datoteke_uporabnikov/{up_ime}'
     datoteka.save(f'{pot}/{datoteka.filename}')
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
@@ -275,14 +278,13 @@ def dodaj_datoteko():
 @bottle.post('/odstrani-datoteko/')
 def odstrani_datoteko():
     up_ime = trenutni_uporabnik().uporabnisko_ime
-    planer = trenutni_uporabnik().planer
+    planer = trenutni_planer()
     src_datoteka = bottle.request.forms.get('datoteka')
     datoteka = planer.poisci_datoteko(src_datoteka)
     planer.odstrani_datoteko(datoteka)
-    os.remove(f'datoteke_uporabnikov/{up_ime}/{datoteka.ime + datoteka.koncnica}')
+    ime_dat = datoteka.ime + datoteka.koncnica
+    os.remove(f'datoteke_uporabnikov/{up_ime}/{ime_dat}')
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
-
-
 
 bottle.run(debug=True, reloader=True)

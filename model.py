@@ -35,12 +35,6 @@ class Uporabnik:
         planer = Planer.nalozi_iz_slovarja(slovar_podatkov['planer'])
         return cls(uporabnisko_ime, geslo, ime_in_priimek,  planer)
 
-
-def povprecje(seznam):
-    if len(seznam) == 0:
-        return 0
-    return sum(seznam)/len(seznam)
-
 class Planer:
     def __init__(self):
         self.predavanja = []
@@ -73,8 +67,8 @@ class Planer:
         del self.predmeti_po_imenih[predmet.ime]
 
     def dodaj_predavanje(self, dan, ura, trajanje, prostor, vrsta, predavatelj, predmet):
-        self._obstoj_predmeta(predmet, 'predavanje')
-        predavanje = Predavanje(dan,ura,trajanje, prostor, vrsta, predavatelj, predmet)
+        self._obstoj_predmeta(predmet)
+        predavanje = Predavanje(dan, ura, trajanje, prostor, vrsta, predavatelj, predmet)
         self.predavanja.append(predavanje)
         self.predavanja_po_predmetih[predmet] = self.predavanja_po_predmetih.get(predmet,[]) + [predavanje]
         return predavanje
@@ -91,7 +85,7 @@ class Planer:
         return seznam
 
     def dodaj_oceno(self, ocena, tip, datum, opis, predmet):
-        self._obstoj_predmeta(predmet, 'oceno')
+        self._obstoj_predmeta(predmet)
         ocena = Ocenjevanje(ocena, tip, datum, opis, predmet)
         self.ocene.append(ocena)
         self.ocene_po_predmetih[predmet] = self.ocene_po_predmetih.get(predmet,[]) + [ocena]
@@ -105,29 +99,35 @@ class Planer:
         for element in self.ocene:
             if str(element) == ocena:
                 return element
-        raise ValueError(f'Ocena ne obstaja!')
+        raise ValueError('Ocena ne obstaja!')
 
     def poisci_predavanje(self, predavanje):
         for element in self.predavanja:
             if str(element) == predavanje:
                 return element
-        raise ValueError(f'Predavanje ne obstaja!')
+        raise ValueError('Predavanje ne obstaja!')
 
-    def _obstoj_predmeta(self, predmet, uporaba):
+    def _obstoj_predmeta(self, predmet):
         if predmet not in self.predmeti:
-            raise ValueError(f'Predmet pri katerem želite dodati {uporaba} ne obstaja!')
+            raise ValueError('Predmet ne obstaja!')
 
     def poisci_datoteko(self, datoteka):
         for element in self.datoteke:
             if str(element) == datoteka:
                 return element
-        raise ValueError(f'Opravilo ne obstaja')
+        raise ValueError('Datoteka ne obstaja')
 
     def poisci_opravilo(self, opravilo):
         for element in self.opravila:
             if str(element) == opravilo:
                 return element
-        raise ValueError(f'Opravilo ne obstaja')
+        raise ValueError('Opravilo ne obstaja')
+    
+    @staticmethod
+    def povprecje(seznam):
+        if len(seznam) == 0:
+            return 0
+        return sum(seznam) / len(seznam)
 
     def slovar_povprecij(self):
         slovar = {}
@@ -135,14 +135,14 @@ class Planer:
             seznam = []
             for ocena in self.ocene_po_predmetih[predmet]:
                 seznam.append(int(ocena.ocena))
-            slovar[predmet] = povprecje(seznam)
+            slovar[predmet] = Planer.povprecje(seznam)
         return slovar
 
     def skupno_povprecje(self):
         seznam = []
         for ocena in self.ocene:
             seznam.append(int(ocena.ocena))
-        return round(povprecje(seznam),1)
+        return round(Planer.povprecje(seznam),1)
 
     def stevilo_ocen(self):
         return len(self.ocene) 

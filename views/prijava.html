@@ -1,97 +1,84 @@
 % rebase('base.html', trenutna_stran='prijava')
 
 <div class="columns">
-
-    <div class="column is-1"></div>
-
-    <div class="column is-4">
-        <div class="content is-large">
-            <h4>Prijava</h4>
-        </div>
-        <form action="/prijava/" method="POST">
-          <div class="field">
-            <label class="label">Uporabniško ime</label>
-            <div class="control has-icons-left">
-              <input class="input" type="text" name="uporabnisko_ime">
-              <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
-              </span>
-            </div>
-            <p class="help">Vpišite veljavno uporabniško ime.</p>
-          </div>
-          
-          <div class="field">
-            <label class="label">Geslo</label>
-            <div class="control has-icons-left">
-              <input class="input" type="password" name="geslo">
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </div>
-          </div>
-
-          <div class="field is-grouped">
-            <div class="control">
-              <input class="button is-link is-outlined" type="submit" value="Prijavi se">
-            </div>
-          </div>
-        
-        </form>
+  <div class="column is-1"></div>
+  <div class="column is-4">
+    <div class="content is-large">
+        <h4>Prijava</h4>
     </div>
-    
-    <div class="column is-1"></div>
-
-    <div class="column is-4">
-        <div class="content is-large">
-            <h4>Registracija</h4>
+    <form action="/prijava/" method="POST">
+      <div class="field">
+        <label class="label">Uporabniško ime</label>
+        <div class="control has-icons-left">
+          <input class="input" type="text" name="uporabnisko_ime">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
         </div>
-        <p>Če še nimate uporabniškega računa se morate najprej registrirati!</p>
-
-        <form action="/registracija/" method="POST">
-        <div class="field">
-            <label class="label">Ime in priimek</label>
-            <div class="control">
-              <input class="input" type="text" name="ime_in_priimek">
-            </div>
-          </div>
-          
-          <div class="field">
-            <label class="label">Uporabniško ime</label>
-            <div class="control has-icons-left">
-              <input class="input" type="text" name="uporabnisko_ime">
-              <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
-              </span>
-            </div>
-            <p class="help">Uporabniško ime naj bo nekaj unikatnega, 
-                saj lahko določeno uporabniško ime pripada le enemu uporabniku.</p>
-          </div>
-          
-          <div class="field">
-            <label class="label">Geslo</label>
-            <div class="control has-icons-left">
-              <input class="input" type="password" name="geslo">
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="control has-icons-left">
-              <input class="input" type="password" name="potrdi" placeholder="Potrdi geslo">
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </div>
-          </div>
-          
-          <div class="field is-grouped">
-            <div class="control">
-              <input class="button is-link is-outlined" type="submit" value="Registracija">
-            </div>
-          </div>
-        </form>
+        <p class="help">Vpišite veljavno uporabniško ime.</p>
+      </div>
+      <div class="field">
+        <label class="label">Geslo</label>
+        <div class="control has-icons-left">
+          <input class="input" type="password" name="geslo">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <input class="button is-link is-outlined" type="submit" value="Prijavi se">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="column is-1"></div>
+  <div class="column is-4">
+    <div class="content is-large">
+        <h4>Registracija</h4>
     </div>
-    
+    <p>Če še nimate uporabniškega računa se morate najprej registrirati!</p>
+    <form action="/registracija/" method="POST">
+      <div class="field">
+        <label class="label">Ime in priimek</label>
+        <div class="control">
+          <input class="input" type="text" name="ime_in_priimek">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Uporabniško ime</label>
+        <div class="control has-icons-left">
+          <input class="input" type="text" name="uporabnisko_ime">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
+        <p class="help">Uporabniško ime naj bo nekaj unikatnega, 
+            saj lahko določeno uporabniško ime pripada le enemu uporabniku.</p>
+      </div>
+      <div class="field">
+        <label class="label">Geslo</label>
+        <div class="control has-icons-left">
+          <input class="input" type="password" name="geslo">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control has-icons-left">
+          <input class="input" type="password" name="potrdi" placeholder="Potrdi geslo">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <input class="button is-link is-outlined" type="submit" value="Registracija">
+        </div>
+      </div>
+    </form>
+  </div>   
 </div>

@@ -5,56 +5,53 @@
 <p class="title is-4">{{dan}}</p>
 <hr>
 % for predavanje in sorted(planer.predavanja_po_dnevu(dan)):
-    <div class="notification{{barve[dan]}}" style="margin-bottom: 4%; padding: 3%;">
-        <p style="padding: 0%; color:black;">{{predavanje.ura}}</p>
-        <p class="title is-6" style="padding: 0%; color: black; margin: 2%;"> {{predavanje.predmet.ime}} </p>
-        <nav class="level is-mobile">
-            <div class="level-left">
-                <a class="level-item">
-                  <div class="dropdown{{prikaz[predavanje.prikaz]}}">
-                    <div class="dropdown-trigger">
-                      <form method="POST" action="/spremeni-prikaz/">
-                        <input type="hidden" name="predavanje" value="{{predavanje}}">
-                           <button class="icon has-text-dark" type="submit" style="border: 0; background-color:inherit;">
-                            <i class= "fas fa-arrow-down" aria-hidden="true"></i>
-                           </button>
-                      </form>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                      <div class="dropdown-content">
-                        <div class="dropdown-item">
-                          <li><b>Vrsta:</b> {{predavanje.vrsta}}</li>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="dropdown-item">
-                          <li><b>Prostor:</b> {{predavanje.prostor}}</li>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="dropdown-item">
-                          <li><b>Predavatelj:</b> {{predavanje.predavatelj}}</li>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="dropdown-item">
-                          <li><b>Trajanje:</b> {{predavanje.trajanje}} min</li>
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-                </a>
+<div class="notification{{barve[dan]}}" style="margin-bottom: 4%; padding: 3%;">
+  <p style="padding: 0%; color:black;">{{predavanje.ura}}</p>
+  <p class="title is-6" style="padding: 0%; color: black; margin: 2%;"> {{predavanje.predmet.ime}} </p>
+  <nav class="level is-mobile">
+    <div class="level-left">
+      <a class="level-item">
+        <div class="dropdown{{prikaz[predavanje.prikaz]}}">
+          <div class="dropdown-trigger">
+            <form method="POST" action="/spremeni-prikaz/">
+              <input type="hidden" name="predavanje" value="{{predavanje}}">
+              <button class="icon has-text-dark" type="submit" style="border: 0; background-color:inherit;">
+                <i class= "fas fa-arrow-down" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                <li><b>Vrsta:</b> {{predavanje.vrsta}}</li>
+              </div>
+              <hr class="dropdown-divider">
+              <div class="dropdown-item">
+                <li><b>Prostor:</b> {{predavanje.prostor}}</li>
+              </div>
+              <hr class="dropdown-divider">
+              <div class="dropdown-item">
+                <li><b>Predavatelj:</b> {{predavanje.predavatelj}}</li>
+              </div>
+              <hr class="dropdown-divider">
+              <div class="dropdown-item">
+                <li><b>Trajanje:</b> {{predavanje.trajanje}} min</li>
+              </div>  
             </div>
-            <div class="level-right">
-                <a class="level-item">
-                  <form method="POST" action="/odstrani-predavanje/">
-                    <input type="hidden" name="predavanje" value="{{predavanje}}">
-                       <button class="icon has-text-dark" type="submit" style="border: 0; background-color: inherit;">
-                        <i class="fas fa-trash" aria-hidden="true"></i>
-                       </button>
-                  </form>
-                </a>
-            </div>
-          </nav>
+          </div>
+        </div>
+      </a>
     </div>
-
-    
+    <div class="level-right">
+      <a class="level-item">
+        <form method="POST" action="/odstrani-predavanje/">
+          <input type="hidden" name="predavanje" value="{{predavanje}}">
+          <button class="icon has-text-dark" type="submit" style="border: 0; background-color: inherit;">
+           <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </form>
+      </a>
+    </div>
+  </nav>
+</div>
 % end

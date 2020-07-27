@@ -20,17 +20,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
-
   <body>
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <div class="navbar-item">
-            <img src="/static/logo.png" width="200" alt="Logo">
-          </div>
+      <div class="navbar-brand">
+        <div class="navbar-item">
+          <img src="/static/logo.png" width="200" alt="Logo">
         </div>
+      </div>
 
       % if trenutna_stran != 'prijava':
-
         <div class="navbar-start">
           <div class="tabs is-centered">
             <ul style="border: 0ch;">
@@ -52,9 +50,7 @@
               % end
             </ul>
           </div>
-          
-        </div>
-    
+        </div>   
         <div class="navbar-end">
           <div class="navbar-item">
             {{ime}}
@@ -73,12 +69,9 @@
           </div>
         </div>
       % end    
-    
     </nav>
-
-      <section class="section">
-        {{!base}}
-      </section>
-      
+    <section class="section">
+      {{!base}}
+    </section>
   </body>
 </html>

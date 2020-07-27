@@ -1,39 +1,39 @@
 % rebase('base.html', trenutna_stran='ocene', ime = ime)
 
 <div class="columns">
-    <div class="column is-one-quarter">
-        <aside class="menu">
-            <p class="menu-label">
-                Splošno
-              </p>
-              <ul class="menu-list">
-                % if podzavihek == 'dodaj-oceno':
-                <li><a class="is-active" href="/ocene/dodaj-oceno/">Dodaj oceno</a></li>
-                % else:
-                  <li><a href="/ocene/dodaj-oceno/">Dodaj oceno</a></li>
-                % end
-              </ul>
-            <p class="menu-label">
-              Predmeti
-            </p>
-            <ul class="menu-list">
-                % for predmet in planer.predmeti:
-                %   if predmet.ime == podzavihek:
-                  <li><a href="/ocene/{{predmet.ime}}/" class="is-active">{{predmet.ime}}</a></li>
-                %   else:
-                  <li><a href="/ocene/{{predmet.ime}}/">{{predmet.ime}}</a></li>
-                %   end
-                % end
-            </ul>
-        </aside>
-    </div>
-    <div class="column">
+  <div class="column is-one-quarter">
+    <aside class="menu">
+      <p class="menu-label">
+        Splošno
+      </p>
+      <ul class="menu-list">
         % if podzavihek == 'dodaj-oceno':
-        % include('_dodaj_oceno.html')
+        <li><a class="is-active" href="/ocene/dodaj-oceno/">Dodaj oceno</a></li>
         % else:
-        % include('_izpis_ocen.html')
+          <li><a href="/ocene/dodaj-oceno/">Dodaj oceno</a></li>
         % end
-    </div>
+      </ul>
+      <p class="menu-label">
+        Predmeti
+      </p>
+      <ul class="menu-list">
+          % for predmet in planer.predmeti:
+          %   if predmet.ime == podzavihek:
+            <li><a href="/ocene/{{predmet.ime}}/" class="is-active">{{predmet.ime}}</a></li>
+          %   else:
+            <li><a href="/ocene/{{predmet.ime}}/">{{predmet.ime}}</a></li>
+          %   end
+          % end
+      </ul>
+    </aside>
   </div>
+  <div class="column">
+      % if podzavihek == 'dodaj-oceno':
+      % include('_dodaj_oceno.html')
+      % else:
+      % include('_izpis_ocen.html')
+      % end
+  </div>
+</div>
 
   
