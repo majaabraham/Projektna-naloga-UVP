@@ -1,0 +1,127 @@
+{
+    "uporabnisko_ime": "mojcan",
+    "geslo": "b0753ffdb21af5963235b05be030593986e3a1c929c2754754354f672a5de154bc6a2c32f447d9c342e592e194efd682cdeaacc7ca5c71ec3bbd35c5c7b0472c",
+    "ime_in_priimek": "Mojca Novak",
+    "planer": {
+        "predmeti": [
+            {
+                "ime": "Analiza"
+            },
+            {
+                "ime": "Algebra"
+            },
+            {
+                "ime": "Raèunalniški praktikum"
+            },
+            {
+                "ime": "Uvod v programiranje"
+            }
+        ],
+        "predavanja": [
+            {
+                "dan": "ponedeljek",
+                "ura": "08:00",
+                "trajanje": "60",
+                "prostor": "2.05",
+                "vrsta": "predavanje",
+                "predavatelj": "nekdo...",
+                "predmet": "Analiza"
+            },
+            {
+                "dan": "ponedeljek",
+                "ura": "13:00",
+                "trajanje": "120",
+                "prostor": "3.11",
+                "vrsta": "vaje",
+                "predavatelj": "nekdo...",
+                "predmet": "Raèunalniški praktikum"
+            },
+            {
+                "dan": "èetrtek",
+                "ura": "07:00",
+                "trajanje": "60",
+                "prostor": "2.05",
+                "vrsta": "vaje",
+                "predavatelj": "nekdo...",
+                "predmet": "Algebra"
+            },
+            {
+                "dan": "èetrtek",
+                "ura": "08:00",
+                "trajanje": "120",
+                "prostor": "2.05",
+                "vrsta": "predavanje",
+                "predavatelj": "nekdo",
+                "predmet": "Uvod v programiranje"
+            }
+        ],
+        "ocene": [
+            {
+                "ocena": 6,
+                "tip": "vaje",
+                "datum": "2020-07-27",
+                "opis": "seštevek kolokvijev",
+                "predmet": "Analiza"
+            },
+            {
+                "ocena": 6,
+                "tip": "teorija",
+                "datum": "2020-07-27",
+                "opis": "pisni izpit",
+                "predmet": "Analiza"
+            },
+            {
+                "ocena": 7,
+                "tip": "vaje",
+                "datum": "2020-07-27",
+                "opis": "pisni izpit",
+                "predmet": "Algebra"
+            },
+            {
+                "ocena": 10,
+                "tip": "vaje",
+                "datum": "2020-07-27",
+                "opis": "kolokviji",
+                "predmet": "Raèunalniški praktikum"
+            }
+        ],
+        "opravila": [
+            {
+                "naslov": "Domaèa naloga",
+                "rok": "2020-09-24",
+                "opis": "Reši domaèo nalogo pri Analizi",
+                "status": false
+            },
+            {
+                "naslov": "Izpit",
+                "rok": "2020-09-10",
+                "opis": "Izpit Analiza teorija",
+                "status": false
+            },
+            {
+                "naslov": "Projekt",
+                "rok": "2020-08-09",
+                "opis": "Dokonèaj projekt pri UVP.",
+                "status": true
+            }
+        ],
+        "datoteke": [
+            {
+                "ime": "test-excel",
+                "koncnica": ".xlsx"
+            },
+            {
+                "ime": "test",
+                "koncnica": ".pptx"
+            },
+            {
+                "ime": "test_word",
+                "koncnica": ".docx"
+            },
+            {
+                "ime": "logo",
+                "koncnica": ".png"
+            }
+        ]
+    }
+}

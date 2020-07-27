@@ -82,6 +82,10 @@ def dan_v_tednu():
     datum = date.today()
     return dnevi[dan], datum
 
+def preusmeri(element, vrednost):
+    if element == vrednost:
+        bottle.redirect('/')
+
 @bottle.get('/')
 def zacetna_stran(): 
     bottle.redirect('/domov/')
@@ -167,8 +171,7 @@ def static(ime_dat):
 def dodaj_predmet():
     planer = trenutni_planer()
     ime = bottle.request.forms.getunicode('ime')
-    if ime == '':
-        bottle.redirect('/')
+    preusmeri(ime, '')
     planer.dodaj_predmet(ime)
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
@@ -265,7 +268,8 @@ def spremeni():
 def dodaj_datoteko():
     up_ime = trenutni_uporabnik().uporabnisko_ime
     planer = trenutni_planer()
-    datoteka = bottle.request.files.get('datoteka') 
+    datoteka = bottle.request.files.get('datoteka')
+    preusmeri(datoteka, None) 
     ime, koncnica = os.path.splitext(datoteka.filename)
     if koncnica not in NABOR_FORMATOV:
         return ValueError('Izberite drug format datoteke.')
